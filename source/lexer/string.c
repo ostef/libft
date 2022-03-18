@@ -6,7 +6,7 @@
 /*   By: soumanso <soumanso@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 15:38:50 by soumanso          #+#    #+#             */
-/*   Updated: 2022/03/02 15:51:18 by soumanso         ###   ########lyon.fr   */
+/*   Updated: 2022/03/18 17:54:46 by soumanso         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,25 @@ t_token	*ft_lexer_skip_char(t_lexer *lexer, char c)
 	result->str = lexer->curr;
 	result->len = 1;
 	lexer->curr += 1;
+	return (result);
+}
+
+t_token	*ft_lexer_skip_string(t_lexer *lexer, t_cstr str)
+{
+	t_token	*result;
+
+	if (lexer->curr >= lexer->end)
+		return (NULL);
+	if (!ft_strnequ (lexer->curr, str,
+			ft_min (ft_strlen (str), lexer->end - lexer->curr)))
+		return (NULL);
+	result = ft_lexer_push_token (lexer);
+	if (!result)
+		return (NULL);
+	result->kind = TK_STRING;
+	result->str = lexer->curr;
+	result->len = 1;
+	lexer->curr += ft_strlen (str);
 	return (result);
 }
 
